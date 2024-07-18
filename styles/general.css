@@ -1,0 +1,10 @@
+/* remove the h1 header title */
+.entry-title {
+	display: none;
+}
+
+/* remove empty site footer */
+.site-footer {
+	width: 0;
+	height: 0;
+}

@@ -1,0 +1,14 @@
+/* remove the lnk to list of followers on profile */
+.um-followers-links {
+	display: none;
+}
+
+/* remove the side bar on user profile */
+.um-theme-profile-single-sidebar {
+	display: none;
+}
+
+/* remove the tab navigation on user profile */
+.um-profile-nav {
+	visibility: hidden;
+}

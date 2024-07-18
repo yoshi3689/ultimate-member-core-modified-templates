@@ -1,0 +1,6 @@
+/* add a blur to premium contents*/
+.blurred-content {
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    transition: filter 0.3s, -webkit-filter 0.3s;
+}

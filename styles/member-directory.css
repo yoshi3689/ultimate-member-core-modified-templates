@@ -1,0 +1,34 @@
+/* resize the follow btn */
+a.um-button {
+	padding: 10px 15px !important;
+}
+
+div.um-member-meta {
+	margin: 0 !important;
+}
+
+/*
+ * ~865px, 125px
+ * 865px ~ 560px, 105px
+ * 560px ~ , 95px
+ * */
+/* For screens larger than 865px */
+@media (min-width: 865px) {
+    div.um-member-card-footer-buttons {
+        width: calc(100% - 125px) !important;
+    }
+}
+
+/* For screens between 560px and 865px */
+@media (min-width: 560px) and (max-width: 864px) {
+    div.um-member-card-footer-buttons {
+        width: calc(100% - 105px) !important;
+    }
+}
+
+/* For screens smaller than 560px */
+@media (max-width: 559px) {
+    div.um-member-card-footer-buttons {
+        width: calc(100% - 95px) !important;
+    }
+}
