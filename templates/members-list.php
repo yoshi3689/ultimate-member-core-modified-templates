@@ -1,4 +1,12 @@
 <?php
+// Get current user's role
+$current_user_role = UM()->roles()->get_role_name( UM()->user()->get_role() );
+
+// Check if the user's role does not contain "Premium" and is not "Administrator"
+$is_not_premium_or_admin = (strpos($current_user_role, 'Premium') === false && $current_user_role !== 'Administrator');
+?>
+
+<?php
 /**
  * Template for the members directory list
  *
@@ -23,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 $unique_hash = substr( md5( $args['form_id'] ), 10, 5 ); ?>
 
-<script type="text/template" id="tmpl-um-member-list-<?php echo esc_attr( $unique_hash ) ?>">
+<script type="text/template" id="tmpl-um-member-list-<?php echo esc_attr( $unique_hash ) ?>" data-is-not-premium-or-admin="<?php echo esc_attr($is_not_premium_or_admin ? 'true' : 'false'); ?>">
 	<div class="um-members um-members-list">
 
 		<# if ( data.length > 0 ) { #>
@@ -48,9 +56,15 @@ $unique_hash = substr( md5( $args['form_id'] ), 10, 5 ); ?>
 							<div class="um-member-card-content">
 								<div class="um-member-card-header">
 									<?php if ( $show_name ) { ?>
-										<# if ( user.display_name_html ) { #>
+										<# if ( user.nickname ) { #>
 											<div class="um-member-name">
-												<a href="{{{user.profile_url}}}" title="<# if ( user.display_name ) { #>{{{user.display_name}}}<# } #>">
+												<a href="{{{user.profile_url}}}" title="{{{user.nickname}}}">
+													{{{user.nickname}}}
+												</a>
+											</div>
+										<# } else if ( user.display_name_html ) { #>
+											<div class="um-member-name">
+												<a href="{{{user.profile_url}}}" title="{{{user.display_name}}}">
 													{{{user.display_name_html}}}
 												</a>
 											</div>
@@ -101,27 +115,29 @@ $unique_hash = substr( md5( $args['form_id'] ), 10, 5 ); ?>
 									<?php } ?>
 
 									<# if ( $show_block ) { #>
-										<div class="um-member-meta-main<?php if ( ! $userinfo_animate ) { echo ' no-animate'; } ?>">
+									    <div class="um-member-meta-main<?php if ( ! $userinfo_animate ) { echo ' no-animate'; } ?>">
+									        <# if ( document.querySelector('#tmpl-um-member-list-<?php echo esc_attr( $unique_hash ) ?>').dataset.isNotPremiumOrAdmin === 'false' ) { #>
+									            <div class="um-member-meta">
+									                <?php foreach ( $reveal_fields as $key ) { ?>
 
-											<div class="um-member-meta">
-												<?php foreach ( $reveal_fields as $key ) { ?>
+									                    <# if ( typeof user['<?php echo $key; ?>'] !== 'undefined' ) { #>
+									                    <div class="um-member-metaline um-member-metaline-<?php echo $key; ?>">
+									                        <strong>{{{user['label_<?php echo $key;?>']}}}:</strong>&nbsp;{{{user['<?php echo $key;?>']}}}
+									                    </div>
+									                    <# } #>
 
-													<# if ( typeof user['<?php echo $key; ?>'] !== 'undefined' ) { #>
-													<div class="um-member-metaline um-member-metaline-<?php echo $key; ?>">
-														<strong>{{{user['label_<?php echo $key;?>']}}}:</strong>&nbsp;{{{user['<?php echo $key;?>']}}}
-													</div>
-													<# } #>
+									                <?php } ?>
 
-												<?php }
-
-												if ( $show_social ) { ?>
-													<div class="um-member-connect">
-														{{{user.social_urls}}}
-													</div>
-												<?php } ?>
-											</div>
-										</div>
+									                <?php if ( $show_social ) { ?>
+									                    <div class="um-member-connect">
+									                        {{{user.social_urls}}}
+									                    </div>
+									                <?php } ?>
+									            </div>
+									        <# } #>
+									    </div>
 									<# } #>
+
 								<?php } ?>
 							</div>
 
